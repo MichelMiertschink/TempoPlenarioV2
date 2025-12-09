@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Plenário (Operador)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="control-body">
+
+    <div class="container" id="mainContainer">
+        <h1>🛠️ Painel de Controle</h1>
+        <p>Use este painel para gerenciar o tempo. A tela de exibição deve estar aberta em outra janela.</p>
+
+        <div class="input-group">
+            <label for="totalTimeInput">Tempo Total (em minutos):</label>
+            <input type="number" id="totalTimeInput" value="3" min="1">
+            <button id="setTimeBtn">Definir Tempo</button>
+            <button onclick="mudarValor(3)">Pequeno Expediente</button>
+            <button onclick="mudarValor(5)">GRANDE Expediente</button>
+        </div>
+
+        <div id="countdown" class="timer-preview">05:00</div>
+        <p class="status-msg">Pré-visualização do Tempo</p>
+
+        <div class="controls">
+            <button id="startStopBtn">Iniciar (Barra de Espaço)</button>
+            <button id="resetBtn">Zerar (R)</button>
+            <button id="openDisplayBtn">Abrir Tela de Exibição</button>
+        </div>
+    </div>
+
+    <audio id="sirenSound" src="siren.mp3" preload="auto"></audio>
+
+    <script src="control.js"></script>
+</body>
+</html>
