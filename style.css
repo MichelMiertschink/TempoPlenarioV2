@@ -23,7 +23,7 @@ body {
     padding: 10px 30px;
     background-color: #34495e;
     color: white;
-    font-size: 1.5rem;
+    font-size: 4.5rem;
     font-weight: bold;
     box-sizing: border-box;
     z-index: 1001; 
@@ -31,7 +31,7 @@ body {
 
 /* Estilo para a mensagem de status no header (direita) */
 .header-status {
-    font-size: 1.5rem;
+    font-size: 4.5rem;
     font-weight: bold;
     text-transform: uppercase;
     color: #f1c40f; /* Cor inicial (Amarelo) */
@@ -52,6 +52,13 @@ body {
 
 /* Estilo de pré-visualização na tela de controle */
 .timer-preview {
+    font-size: 4rem; 
+    font-weight: bold;
+    margin: 20px 0 5px 0;
+    color: #2c3e50;
+}
+
+.expediente-preview {
     font-size: 4rem; 
     font-weight: bold;
     margin: 20px 0 5px 0;
@@ -81,6 +88,11 @@ body {
 
 #resetBtn {
     background-color: #e74c3c;
+    color: white;
+}
+
+#sirenBtn {
+    background-color: brown;
     color: white;
 }
 

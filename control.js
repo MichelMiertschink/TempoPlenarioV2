@@ -5,17 +5,22 @@ const resetBtn = document.getElementById('resetBtn');
 const totalTimeInput = document.getElementById('totalTimeInput');
 const setTimeBtn = document.getElementById('setTimeBtn');
 const openDisplayBtn = document.getElementById('openDisplayBtn');
+const setPeqExp = document.getElementById('setPeqExp');
+const setGrndExp = document.getElementById('setGrndExp');
+const setPronunExp = document.getElementById('setPronunExp');
 
 // --- Chaves do localStorage ---
 const STORAGE_TIME_LEFT = 'plenario_timeLeft';
 const STORAGE_TOTAL_TIME = 'plenario_totalTime';
 const STORAGE_IS_RUNNING = 'plenario_isRunning';
-const STORAGE_LAST_SYNC = 'plenario_lastSync'; 
+const STORAGE_LAST_SYNC = 'plenario_lastSync';
+const STORAGE_EXPEDIENTE = 'plenario_expediente';
 
 // --- Variáveis de Controle ---
 let totalTimeSeconds = 300; 
 let timeLeft = totalTimeSeconds;
 let isRunning = false;
+let tempo = 0;
 
 // --- Funções Auxiliares ---
 
@@ -42,6 +47,7 @@ function saveState() {
     localStorage.setItem(STORAGE_IS_RUNNING, isRunning);
     // Marca o tempo do último comando para o display saber que houve mudança
     localStorage.setItem(STORAGE_LAST_SYNC, Date.now()); 
+    localStorage.setItem(STORAGE_EXPEDIENTE, expediente)
 }
 
 /**
@@ -99,6 +105,14 @@ setTimeBtn.addEventListener('click', () => {
     }
 });
 
+setPeqExp.addEventListener('click', () => {
+        expediente = "Pequeno Expediente"
+       
+        saveState();
+        updateButtonText();
+        updateDisplay();
+});
+
 function toggleTimer() {
     if (startStopBtn.disabled) return;
 
@@ -142,12 +156,26 @@ document.addEventListener('keydown', (event) => {
         event.preventDefault();
         resetBtn.click();
     }
+    if (event.key === '2' || event.key === 'R') {
+        event.preventDefault();
+        resetBtn.click();
+    }
 });
 
 // --- função para alterar o valor do campo conforme expediente
 function mudarValor(tempo) {
     var inputElemento = document.getElementById('totalTimeInput');
     inputElemento.value = tempo;
+}
+
+function playSiren(tempo) {
+    sirenSound.currentTime = 0;
+    sirenSound.play();
+    setTimeout(() => {
+        if (!sirenSound.paused) {
+            sirenSound.pause();
+        }
+    }, tempo*1000);
 }
 
 // --- Inicialização ---

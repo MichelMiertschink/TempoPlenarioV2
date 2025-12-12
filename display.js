@@ -2,7 +2,7 @@
 const countdownEl = document.getElementById('countdown');
 const currentClockEl = document.getElementById('currentClock');
 const mainContainer = document.getElementById('mainContainer');
-const headerStatusEl = document.getElementById('headerStatus'); // NOVO ELEMENTO
+const headerStatusEl = document.getElementById('headerStatus');
 const sirenSound = document.getElementById('sirenSound');
 
 // --- Chaves do localStorage ---
@@ -10,6 +10,7 @@ const STORAGE_TIME_LEFT = 'plenario_timeLeft';
 const STORAGE_TOTAL_TIME = 'plenario_totalTime';
 const STORAGE_IS_RUNNING = 'plenario_isRunning';
 const STORAGE_LAST_SYNC = 'plenario_lastSync';
+const STORAGE_EXPEDIENTE = 'plenario_expediente';
 
 // --- Variáveis de Controle ---
 let totalTimeSeconds = 0; 
@@ -17,7 +18,8 @@ let timeLeft = 0;
 let timerInterval = null;
 let clockInterval = null;
 let oneMinuteWarningIssued = false;
-let lastSyncedTime = 0; 
+let lastSyncedTime = 0;
+let expediente = 'AGUARDANDO';
 
 // --- Funções Auxiliares ---
 
@@ -36,12 +38,12 @@ function playSiren(tempo) {
         if (!sirenSound.paused) {
             sirenSound.pause();
         }
-    }, tempo);
+    }, tempo*1000);
 }
 
 function startWarning() {
     countdownEl.classList.add('blinking');
-    playSiren(1000);
+    playSiren(1);
     oneMinuteWarningIssued = true;
 }
 
@@ -66,7 +68,7 @@ function updateDisplay() {
         headerStatusEl.style.color = '#f1c40f'; // Amarelo
     } else {
         // Em Curso
-        headerStatusEl.textContent = 'EM CURSO';
+        headerStatusEl.textContent = expediente;
         headerStatusEl.style.color = '#2ecc71'; // Verde
     }
 }
@@ -136,6 +138,7 @@ function syncStateFromControl() {
     const newRunning = localStorage.getItem(STORAGE_IS_RUNNING) === 'true';
     const lastSync = parseInt(localStorage.getItem(STORAGE_LAST_SYNC) || 0, 10);
     
+    
     // Verifica se houve uma alteração real no controle
     if (lastSync > lastSyncedTime || newTotal !== totalTimeSeconds) {
         
@@ -147,6 +150,7 @@ function syncStateFromControl() {
         totalTimeSeconds = newTotal;
         timeLeft = newLeft;
         lastSyncedTime = lastSync;
+        expediente = localStorage.getItem(STORAGE_EXPEDIENTE);
 
         // Lógica de Iniciar/Parar com base no controle
         if (newRunning) {
