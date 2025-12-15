@@ -182,7 +182,7 @@ resetBtn.addEventListener('click', () => {
 });
 
 openDisplayBtn.addEventListener('click', () => {
-    window.open('display.html', '_blank');
+    window.open('display.html', '_blank', 'fullscreen="yes"');
 });
 
 startStopBtn.addEventListener('click', toggleTimer); 
