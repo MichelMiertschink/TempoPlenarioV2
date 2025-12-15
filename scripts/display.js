@@ -62,14 +62,17 @@ function updateDisplay() {
         // Tempo Esgotado
         headerStatusEl.textContent = 'TEMPO ESGOTADO';
         headerStatusEl.style.color = '#e74c3c'; // Vermelho
+        countdownEl.style.color = '#e74c3c';
     } else if (!timerInterval) {
         // Pausado (ou Aguardando)
         headerStatusEl.textContent = 'PAUSADO - ' + expediente;
         headerStatusEl.style.color = '#f1c40f'; // Amarelo
+        countdownEl.style.color = '#f1c40f';
     } else {
         // Em Curso
         headerStatusEl.textContent = expediente;
         headerStatusEl.style.color = '#2ecc71'; // Verde
+        countdownEl.style.color = '#2ecc71';
     }
 }
 

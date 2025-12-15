@@ -8,6 +8,7 @@ const openDisplayBtn = document.getElementById('openDisplayBtn');
 const expedienteE1 = document.getElementById('expediente');
 const setPeqExp = document.getElementById('setPeqExp');
 const setGrndExp = document.getElementById('setGrndExp');
+const setTempoExtra = document.getElementById('setTempoExtra');
 const setPronunExp = document.getElementById('setPronunExp');
 
 // --- Chaves do localStorage ---
@@ -37,7 +38,6 @@ function formatTime(seconds) {
 function updateDisplay() {
     countdownEl.textContent = formatTime(timeLeft);
     expedienteE1.textContent = expediente;
-
 }
 
 // --- Sincronização com Display ---
@@ -96,7 +96,6 @@ function updateButtonText() {
 
 setTimeBtn.addEventListener('click', () => {
     const minutes = parseFloat(totalTimeInput.value, 10);
-    if (minutes > 0) {
         totalTimeSeconds = minutes * 60;
         timeLeft = totalTimeSeconds;
         isRunning = false;
@@ -105,14 +104,11 @@ setTimeBtn.addEventListener('click', () => {
         saveState();
         updateButtonText();
         updateDisplay();
-    } else {
-        alert("O tempo total deve ser no mínimo 1 minuto.");
-    }
 });
 
 setPeqExp.addEventListener('click', () => {
+    mudarValor(3);
     const minutes = parseFloat(totalTimeInput.value, 10);
-    if (minutes > 0) {
         totalTimeSeconds = minutes * 60;
         timeLeft = totalTimeSeconds;
         isRunning = false;
@@ -121,14 +117,11 @@ setPeqExp.addEventListener('click', () => {
         saveState();
         updateButtonText();
         updateDisplay();
-    } else {
-        alert("O tempo total deve ser no mínimo 1 minuto.");
-    }
 });
 
 setGrndExp.addEventListener('click', () => {
+    mudarValor(5);
     const minutes = parseFloat(totalTimeInput.value, 10);
-    if (minutes > 0) {
         totalTimeSeconds = minutes * 60;
         timeLeft = totalTimeSeconds;
         isRunning = false;
@@ -137,14 +130,11 @@ setGrndExp.addEventListener('click', () => {
         saveState();
         updateButtonText();
         updateDisplay();
-    } else {
-        alert("O tempo total deve ser no mínimo 1 minuto.");
-    }
 });
 
 setPronunExp.addEventListener('click', () => {
+    mudarValor(10);
     const minutes = parseFloat(totalTimeInput.value, 10);
-    if (minutes > 0) {
         totalTimeSeconds = minutes * 60;
         timeLeft = totalTimeSeconds;
         isRunning = false;
@@ -153,9 +143,19 @@ setPronunExp.addEventListener('click', () => {
         saveState();
         updateButtonText();
         updateDisplay();
-    } else {
-        alert("O tempo total deve ser no mínimo 1 minuto.");
-    }
+});
+
+setTempoExtra.addEventListener('click', () => {
+    mudarValor(0.5);
+    const minutes = parseFloat(totalTimeInput.value, 10);
+        totalTimeSeconds = minutes * 60;
+        timeLeft = totalTimeSeconds;
+        isRunning = false;
+        expediente = "Tempo Extra"
+        
+        saveState();
+        updateButtonText();
+        updateDisplay();
 });
 
 function toggleTimer() {
@@ -198,10 +198,6 @@ document.addEventListener('keydown', (event) => {
         }
     }
     if (event.key === 'r' || event.key === 'R') {
-        event.preventDefault();
-        resetBtn.click();
-    }
-    if (event.key === '2' || event.key === 'R') {
         event.preventDefault();
         resetBtn.click();
     }

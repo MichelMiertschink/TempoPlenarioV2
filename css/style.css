@@ -119,6 +119,10 @@ input {
     color: white;
 }
 
+.tempoExtra {
+    background-color: #f1c40f;
+}
+
 /* --- Modo Tela Cheia (Exibição) --- */
 
 .container.fullscreen {
