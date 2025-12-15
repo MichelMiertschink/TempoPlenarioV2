@@ -10,6 +10,7 @@ const setPeqExp = document.getElementById('setPeqExp');
 const setGrndExp = document.getElementById('setGrndExp');
 const setTempoExtra = document.getElementById('setTempoExtra');
 const setPronunExp = document.getElementById('setPronunExp');
+const setClockMode = document.getElementById('setClockMode');
 
 // --- Chaves do localStorage ---
 const STORAGE_TIME_LEFT = 'plenario_timeLeft';
@@ -17,13 +18,14 @@ const STORAGE_TOTAL_TIME = 'plenario_totalTime';
 const STORAGE_IS_RUNNING = 'plenario_isRunning';
 const STORAGE_LAST_SYNC = 'plenario_lastSync';
 const STORAGE_EXPEDIENTE = 'plenario_expediente';
+const STORAGE_CLOCK_MODE = 'plenario_clockMode';
 
 // --- Variáveis de Controle ---
 let totalTimeSeconds = 300; 
-let timeLeft = totalTimeSeconds.toFixed(2);
+let timeLeft = totalTimeSeconds;
 let isRunning = false;
-let tempo = 0;
-let expediente = 'Tribuna Livre'
+let expediente = 'Tribuna Livre';
+let clockMode = false;
 
 // --- Funções Auxiliares ---
 
@@ -49,9 +51,9 @@ function saveState() {
     localStorage.setItem(STORAGE_TOTAL_TIME, totalTimeSeconds);
     localStorage.setItem(STORAGE_TIME_LEFT, timeLeft);
     localStorage.setItem(STORAGE_IS_RUNNING, isRunning);
-    // Marca o tempo do último comando para o display saber que houve mudança
     localStorage.setItem(STORAGE_LAST_SYNC, Date.now()); 
-    localStorage.setItem(STORAGE_EXPEDIENTE, expediente)
+    localStorage.setItem(STORAGE_EXPEDIENTE, expediente);
+    localStorage.setItem(STORAGE_CLOCK_MODE, clockMode);
 }
 
 /**
@@ -61,6 +63,8 @@ function loadState() {
     const storedTotal = localStorage.getItem(STORAGE_TOTAL_TIME);
     const storedLeft = localStorage.getItem(STORAGE_TIME_LEFT);
     const storedRunning = localStorage.getItem(STORAGE_IS_RUNNING);
+    const storedClockMode = localStorage.getItem(STORAGE_CLOCK_MODE);
+    const storedExpediente = localStorage.getItem(STORAGE_EXPEDIENTE);
 
     if (storedTotal) {
         totalTimeSeconds = parseInt(storedTotal, 10);
@@ -74,9 +78,18 @@ function loadState() {
     if (storedRunning !== null) {
         isRunning = storedRunning === 'true';
     }
+    if (storedClockMode !== null) {
+        clockMode = storedClockMode === 'true';
+    }
+    if (storedExpediente !== null) {
+        expediente = storedExpediente;
+    } else {
+        expediente = 'Tribuna Livre';
+    }
 
     updateButtonText();
     updateDisplay();
+    updateClockModeButton();
 }
 
 function updateButtonText() {
@@ -92,18 +105,43 @@ function updateButtonText() {
     }
 }
 
+function updateClockModeButton() {
+    if (clockMode) {
+        setClockMode.textContent = 'Cronômetro';
+        setClockMode.classList.add('active-mode');
+    } else {
+        setClockMode.textContent = 'Relógio';
+        setClockMode.classList.remove('active-mode');
+    }
+}
+
 // --- Manipuladores de Evento ---
+
+setClockMode.addEventListener('click', () => {
+    clockMode = !clockMode;
+    
+    // Força a parada do cronômetro ao entrar no modo Relógio
+    if (clockMode) {
+        isRunning = false; 
+    }
+    
+    updateClockModeButton();
+    updateButtonText();
+    saveState();
+});
 
 setTimeBtn.addEventListener('click', () => {
     const minutes = parseFloat(totalTimeInput.value, 10);
         totalTimeSeconds = minutes * 60;
         timeLeft = totalTimeSeconds;
         isRunning = false;
-        expediente = 'Tribuna livre' 
+        expediente = 'Tribuna livre'; 
+        clockMode = false; // DESLIGA O RELÓGIO
         
         saveState();
         updateButtonText();
         updateDisplay();
+        updateClockModeButton();
 });
 
 setPeqExp.addEventListener('click', () => {
@@ -112,11 +150,13 @@ setPeqExp.addEventListener('click', () => {
         totalTimeSeconds = minutes * 60;
         timeLeft = totalTimeSeconds;
         isRunning = false;
-        expediente = "Pequeno Expediente"
+        expediente = "Pequeno Expediente";
+        clockMode = false; // DESLIGA O RELÓGIO
         
         saveState();
         updateButtonText();
         updateDisplay();
+        updateClockModeButton();
 });
 
 setGrndExp.addEventListener('click', () => {
@@ -125,11 +165,13 @@ setGrndExp.addEventListener('click', () => {
         totalTimeSeconds = minutes * 60;
         timeLeft = totalTimeSeconds;
         isRunning = false;
-        expediente = "Grande Expediente"
+        expediente = "Grande Expediente";
+        clockMode = false; 
         
         saveState();
         updateButtonText();
         updateDisplay();
+        updateClockModeButton();
 });
 
 setPronunExp.addEventListener('click', () => {
@@ -138,11 +180,13 @@ setPronunExp.addEventListener('click', () => {
         totalTimeSeconds = minutes * 60;
         timeLeft = totalTimeSeconds;
         isRunning = false;
-        expediente = "Pronunciamento"
+        expediente = "Pronunciamento";
+        clockMode = false; 
         
         saveState();
         updateButtonText();
         updateDisplay();
+        updateClockModeButton();
 });
 
 setTempoExtra.addEventListener('click', () => {
@@ -151,15 +195,23 @@ setTempoExtra.addEventListener('click', () => {
         totalTimeSeconds = minutes * 60;
         timeLeft = totalTimeSeconds;
         isRunning = false;
-        expediente = "Tempo Extra"
+        expediente = "Tempo Extra";
+        clockMode = false; 
         
         saveState();
         updateButtonText();
         updateDisplay();
+        updateClockModeButton();
 });
 
 function toggleTimer() {
     if (startStopBtn.disabled) return;
+    
+    // Ao iniciar o timer, garante que o modo relógio está desativado
+    if (!isRunning) {
+        clockMode = false;
+        updateClockModeButton();
+    }
 
     isRunning = !isRunning;
 
@@ -175,10 +227,12 @@ function toggleTimer() {
 resetBtn.addEventListener('click', () => {
     isRunning = false;
     timeLeft = totalTimeSeconds;
+    clockMode = false; // ZERAR também desliga o relógio
     
     saveState();
     updateButtonText();
     updateDisplay();
+    updateClockModeButton();
 });
 
 openDisplayBtn.addEventListener('click', () => {
@@ -192,7 +246,6 @@ document.addEventListener('keydown', (event) => {
     if (event.code === 'Space' || event.key === ' ') {
         event.preventDefault(); 
         const activeElement = document.activeElement;
-        // Permite o atalho apenas se não estiver editando o tempo
         if (activeElement !== totalTimeInput) {
             toggleTimer();
         }

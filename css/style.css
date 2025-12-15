@@ -150,7 +150,7 @@ input {
     z-index: 1000;
 }
 
-.fullscreen .timer {
+.fullscreen {
     font-size: 40vw; 
     font-weight: bold;
     margin: 0;
@@ -171,4 +171,30 @@ input {
     animation: blink 0.5s step-start infinite; 
     /* Monitor não aceita vermelho */
     /* color: #e74c3c !important; */
+}
+
+/* --- Ajustes CSS para o modo Relógio --- */
+
+/* Esconde o elemento por padrão */
+.hidden {
+    display: none !important;
+}
+
+/* Garante que o relógio grande use o mesmo estilo de fonte */
+.big-clock {
+    font-size: 25vw; /* O mesmo tamanho do cronômetro para consistência */
+    width: 100%;
+    text-align: center;
+    letter-spacing: -0.5vw; /* Ajuste o espaçamento para o formato 00:00:00 */
+    line-height: 1;
+}
+
+/* No modo fullscreen, os elementos que não são o cronômetro/relógio grande devem ser escondidos */
+.container.fullscreen #countdown:not(.hidden),
+.container.fullscreen #bigClock:not(.hidden) {
+    display: flex; /* Garante que o relógio/cronômetro visível utilize o flexbox do container para centralização */
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
 }

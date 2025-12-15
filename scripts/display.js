@@ -4,6 +4,7 @@ const currentClockEl = document.getElementById('currentClock');
 const mainContainer = document.getElementById('mainContainer');
 const headerStatusEl = document.getElementById('headerStatus');
 const sirenSound = document.getElementById('sirenSound');
+const bigClockEl = document.getElementById('bigClock'); 
 
 // --- Chaves do localStorage ---
 const STORAGE_TIME_LEFT = 'plenario_timeLeft';
@@ -11,6 +12,7 @@ const STORAGE_TOTAL_TIME = 'plenario_totalTime';
 const STORAGE_IS_RUNNING = 'plenario_isRunning';
 const STORAGE_LAST_SYNC = 'plenario_lastSync';
 const STORAGE_EXPEDIENTE = 'plenario_expediente';
+const STORAGE_CLOCK_MODE = 'plenario_clockMode'; 
 
 // --- Variáveis de Controle ---
 let totalTimeSeconds = 0; 
@@ -20,6 +22,7 @@ let clockInterval = null;
 let oneMinuteWarningIssued = false;
 let lastSyncedTime = 0;
 let expediente = 'AGUARDANDO';
+let clockMode = false; 
 
 // --- Funções Auxiliares ---
 
@@ -52,25 +55,56 @@ function stopWarning() {
 }
 
 /**
+ * Função para atualizar a exibição do relógio grande.
+ */
+function updateBigClock() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    bigClockEl.textContent = `${hours}:${minutes}:${seconds}`;
+}
+
+/**
+ * Alterna a visibilidade entre cronômetro e relógio grande.
+ */
+function toggleDisplayMode() {
+    if (clockMode) {
+        countdownEl.classList.add('hidden');
+        bigClockEl.classList.remove('hidden');
+        updateBigClock(); 
+    } else {
+        countdownEl.classList.remove('hidden');
+        bigClockEl.classList.add('hidden');
+    }
+}
+
+/**
  * Atualiza o display do cronômetro E o status do cabeçalho.
  */
 function updateDisplay() {
+    // 1. Alterna o modo de exibição principal
+    toggleDisplayMode(); 
+
+    // 2. Se for modo relógio, apenas atualiza o cabeçalho e sai
+    if (clockMode) {
+        headerStatusEl.textContent = 'HORÁRIO DE BRASÍLIA';
+        headerStatusEl.style.color = '#3498db'; // Azul para o relógio
+        return; 
+    }
+
+    // 3. Atualiza o cronômetro (só visível se clockMode for false)
     countdownEl.textContent = formatTime(timeLeft);
     
-    // Lógica de status no Header
+    // 4. Lógica de status no Header e cor do cronômetro
     if (timeLeft <= 0) {
-        // Tempo Esgotado
         headerStatusEl.textContent = 'TEMPO ESGOTADO';
-       // Ajuste pois a tela não aceita VERMELHO
-       //  headerStatusEl.style.color = '#e74c3c'; // Vermelho
-        countdownEl.style.color = '#e74c3c';
+        countdownEl.style.color = '#e74c3c'; // Vermelho
     } else if (!timerInterval) {
-        // Pausado (ou Aguardando)
-        headerStatusEl.textContent = /* 'PAUSADO - ' + */ expediente;
+        headerStatusEl.textContent = expediente;
         headerStatusEl.style.color = '#f1c40f'; // Amarelo
         countdownEl.style.color = '#f1c40f';
     } else {
-        // Em Curso
         headerStatusEl.textContent = expediente;
         headerStatusEl.style.color = '#2ecc71'; // Verde
         countdownEl.style.color = '#2ecc71';
@@ -84,12 +118,10 @@ function tick() {
         timeLeft--;
         updateDisplay();
 
-        // 🚨 Alerta de 1 minuto restante 🚨
         if (timeLeft === 60 && !oneMinuteWarningIssued) {
             startWarning();
         }
 
-        // Fim do tempo
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
             timerInterval = null;
@@ -131,7 +163,13 @@ function updateClock() {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
     currentClockEl.textContent = `${hours}:${minutes}:${seconds}`;
+    
+    // Atualiza o relógio grande também, se estiver visível
+    if (clockMode) {
+        updateBigClock();
+    }
 }
+
 
 /**
  * Verifica o localStorage para comandos do controle.
@@ -141,11 +179,15 @@ function syncStateFromControl() {
     const newLeft = parseInt(localStorage.getItem(STORAGE_TIME_LEFT) || 0, 10);
     const newRunning = localStorage.getItem(STORAGE_IS_RUNNING) === 'true';
     const lastSync = parseInt(localStorage.getItem(STORAGE_LAST_SYNC) || 0, 10);
+    const newClockMode = localStorage.getItem(STORAGE_CLOCK_MODE) === 'true'; 
     
     
     // Verifica se houve uma alteração real no controle
-    if (lastSync > lastSyncedTime || newTotal !== totalTimeSeconds) {
+    if (lastSync > lastSyncedTime || newTotal !== totalTimeSeconds || newClockMode !== clockMode) {
         
+        // Se o modo de exibição mudou
+        clockMode = newClockMode;
+
         // Se o tempo total mudou, reseta o aviso de 1 minuto
         if (newTotal !== totalTimeSeconds) {
             oneMinuteWarningIssued = false;
@@ -154,10 +196,10 @@ function syncStateFromControl() {
         totalTimeSeconds = newTotal;
         timeLeft = newLeft;
         lastSyncedTime = lastSync;
-        expediente = localStorage.getItem(STORAGE_EXPEDIENTE);
+        expediente = localStorage.getItem(STORAGE_EXPEDIENTE) || 'AGUARDANDO';
 
         // Lógica de Iniciar/Parar com base no controle
-        if (newRunning) {
+        if (newRunning && !clockMode) { // SÓ INICIA SE NÃO ESTIVER EM MODO RELÓGIO
             startTimer();
         } else {
             stopTimer();
@@ -173,7 +215,7 @@ function syncStateFromControl() {
 // --- Inicialização ---
 
 window.onload = function() {
-    // 1. Inicia o relógio de hora atual
+    // 1. Inicia o relógio de hora atual (pequeno)
     updateClock();
     clockInterval = setInterval(updateClock, 1000);
     
