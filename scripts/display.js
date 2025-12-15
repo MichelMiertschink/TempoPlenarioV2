@@ -43,7 +43,7 @@ function playSiren(tempo) {
 
 function startWarning() {
     countdownEl.classList.add('blinking');
-    playSiren(1);
+    playSiren(1.5);
     oneMinuteWarningIssued = true;
 }
 
@@ -61,11 +61,12 @@ function updateDisplay() {
     if (timeLeft <= 0) {
         // Tempo Esgotado
         headerStatusEl.textContent = 'TEMPO ESGOTADO';
-        headerStatusEl.style.color = '#e74c3c'; // Vermelho
+       // Ajuste pois a tela não aceita VERMELHO
+       //  headerStatusEl.style.color = '#e74c3c'; // Vermelho
         countdownEl.style.color = '#e74c3c';
     } else if (!timerInterval) {
         // Pausado (ou Aguardando)
-        headerStatusEl.textContent = 'PAUSADO - ' + expediente;
+        headerStatusEl.textContent = /* 'PAUSADO - ' + */ expediente;
         headerStatusEl.style.color = '#f1c40f'; // Amarelo
         countdownEl.style.color = '#f1c40f';
     } else {

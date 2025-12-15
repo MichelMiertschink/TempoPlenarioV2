@@ -26,7 +26,8 @@ body {
     font-size: 4.5rem;
     font-weight: bold;
     box-sizing: border-box;
-    z-index: 1001; 
+    z-index: 1001;
+    /* white-space: nowrap; */
 }
 
 /* Estilo para a mensagem de status no header (direita) */
@@ -162,5 +163,6 @@ input {
 
 .blinking {
     animation: blink 0.5s step-start infinite; 
-    color: #e74c3c !important; 
+    /* Monitor não aceita vermelho */
+    /* color: #e74c3c !important; */
 }
