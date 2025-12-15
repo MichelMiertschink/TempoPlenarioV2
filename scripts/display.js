@@ -64,7 +64,7 @@ function updateDisplay() {
         headerStatusEl.style.color = '#e74c3c'; // Vermelho
     } else if (!timerInterval) {
         // Pausado (ou Aguardando)
-        headerStatusEl.textContent = 'PAUSADO';
+        headerStatusEl.textContent = 'PAUSADO - ' + expediente;
         headerStatusEl.style.color = '#f1c40f'; // Amarelo
     } else {
         // Em Curso

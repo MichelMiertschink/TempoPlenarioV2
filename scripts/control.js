@@ -5,6 +5,7 @@ const resetBtn = document.getElementById('resetBtn');
 const totalTimeInput = document.getElementById('totalTimeInput');
 const setTimeBtn = document.getElementById('setTimeBtn');
 const openDisplayBtn = document.getElementById('openDisplayBtn');
+const expedienteE1 = document.getElementById('expediente');
 const setPeqExp = document.getElementById('setPeqExp');
 const setGrndExp = document.getElementById('setGrndExp');
 const setPronunExp = document.getElementById('setPronunExp');
@@ -21,6 +22,7 @@ let totalTimeSeconds = 300;
 let timeLeft = totalTimeSeconds;
 let isRunning = false;
 let tempo = 0;
+let expediente = 'Tribuna Livre'
 
 // --- Funções Auxiliares ---
 
@@ -34,6 +36,8 @@ function formatTime(seconds) {
 
 function updateDisplay() {
     countdownEl.textContent = formatTime(timeLeft);
+    expedienteE1.textContent = expediente;
+
 }
 
 // --- Sincronização com Display ---
@@ -95,7 +99,8 @@ setTimeBtn.addEventListener('click', () => {
     if (minutes > 0) {
         totalTimeSeconds = minutes * 60;
         timeLeft = totalTimeSeconds;
-        isRunning = false; 
+        isRunning = false;
+        expediente = 'Tribuna livre' 
         
         saveState();
         updateButtonText();
@@ -106,11 +111,51 @@ setTimeBtn.addEventListener('click', () => {
 });
 
 setPeqExp.addEventListener('click', () => {
+    const minutes = parseFloat(totalTimeInput.value, 10);
+    if (minutes > 0) {
+        totalTimeSeconds = minutes * 60;
+        timeLeft = totalTimeSeconds;
+        isRunning = false;
         expediente = "Pequeno Expediente"
-       
+        
         saveState();
         updateButtonText();
         updateDisplay();
+    } else {
+        alert("O tempo total deve ser no mínimo 1 minuto.");
+    }
+});
+
+setGrndExp.addEventListener('click', () => {
+    const minutes = parseFloat(totalTimeInput.value, 10);
+    if (minutes > 0) {
+        totalTimeSeconds = minutes * 60;
+        timeLeft = totalTimeSeconds;
+        isRunning = false;
+        expediente = "Grande Expediente"
+        
+        saveState();
+        updateButtonText();
+        updateDisplay();
+    } else {
+        alert("O tempo total deve ser no mínimo 1 minuto.");
+    }
+});
+
+setPronunExp.addEventListener('click', () => {
+    const minutes = parseFloat(totalTimeInput.value, 10);
+    if (minutes > 0) {
+        totalTimeSeconds = minutes * 60;
+        timeLeft = totalTimeSeconds;
+        isRunning = false;
+        expediente = "Pronunciamento"
+        
+        saveState();
+        updateButtonText();
+        updateDisplay();
+    } else {
+        alert("O tempo total deve ser no mínimo 1 minuto.");
+    }
 });
 
 function toggleTimer() {

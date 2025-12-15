@@ -81,6 +81,29 @@ body {
     transition: background-color 0.3s;
 }
 
+button:hover {
+    opacity: 70%;
+}
+
+label {
+    font-size: xx-large;
+}
+
+input {
+    font-size: x-large;
+    width: 50px;
+}
+
+#setTimeBtn {
+    background-color: #34495e;
+    color: white;
+}
+
+.expBtn {
+    background-color: #2766ae;
+    color: white;
+}
+
 #startStopBtn {
     background-color: #27ae60;
     color: white;
@@ -95,7 +118,6 @@ body {
     background-color: brown;
     color: white;
 }
-
 
 /* --- Modo Tela Cheia (Exibição) --- */
 
@@ -118,10 +140,10 @@ body {
 }
 
 .fullscreen .timer {
-    font-size: 25vw; 
+    font-size: 40vw; 
     font-weight: bold;
     margin: 0;
-    color: white;
+    color: #25f90e;
     width: 100%; 
     text-align: center; 
     letter-spacing: -1vw; 

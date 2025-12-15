@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Plenário (Operador)</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="control-body">
 
@@ -12,21 +12,21 @@
         <h1>🛠️ Painel de Controle</h1>
         <p>Use este painel para gerenciar o tempo. A tela de exibição deve estar aberta em outra janela.</p>
 
-        <div class="input-group">
-            <button id="setPeqExp" onclick="mudarValor(3)">Pequeno Expediente</button>
-            <button id="setGrndExp" onclick="mudarValor(5)">Grande Expediente</button>
-            <button id="setPronunExp" onclick="mudarValor(10)">Pronuciamento</button>
+        <div class="controls">
+            <button class="expBtn" id="setPeqExp" onclick="mudarValor(3)">Pequeno Expediente</button>
+            <button class="expBtn" id="setGrndExp" onclick="mudarValor(5)">Grande Expediente</button>
+            <button class="expBtn" id="setPronunExp" onclick="mudarValor(10)">Pronunciamento</button>
         </div>
         <hr>
 
-        <div class="input-group">
+        <div class="input-group controls">
             <label for="totalTimeInput">Tempo Total (em minutos):</label>
             <input type="number" id="totalTimeInput" value="3" min="1">
             <button id="setTimeBtn">Definir Tempo</button>
         </div>
 
         <div id="countdown" class="timer-preview">00:00</div>
-        <div id="expediente" class="expediente-preview">Tribuna</div>
+        <div id="expediente" class="expediente-preview"></div>
         <p class="status-msg">Pré-visualização do Tempo</p>
 
         <div class="controls">
@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <audio id="sirenSound" src="siren.mp3" preload="auto"></audio>
-    <script src="control.js"></script>
+    <audio id="sirenSound" src="audio/siren.mp3" preload="auto"></audio>
+    <script src="scripts/control.js"></script>
 </body>
 </html>
