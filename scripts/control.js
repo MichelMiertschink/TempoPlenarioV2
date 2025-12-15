@@ -20,7 +20,7 @@ const STORAGE_EXPEDIENTE = 'plenario_expediente';
 
 // --- Variáveis de Controle ---
 let totalTimeSeconds = 300; 
-let timeLeft = totalTimeSeconds;
+let timeLeft = totalTimeSeconds.toFixed(2);
 let isRunning = false;
 let tempo = 0;
 let expediente = 'Tribuna Livre'
