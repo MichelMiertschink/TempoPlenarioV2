@@ -98,11 +98,11 @@ label {
 
 input {
     font-size: x-large;
-    width: 50px;
+    width: 150px;
 }
 
 #setTimeBtn {
-    background-color: #34495e;
+    background-color: #0080ff;
     color: white;
 }
 
