@@ -170,7 +170,7 @@ input {
 .blinking {
     animation: blink 0.5s step-start infinite; 
     /* Monitor não aceita vermelho */
-    /* color: #e74c3c !important; */
+    color: #e74c3c !important;
 }
 
 /* --- Ajustes CSS para o modo Relógio --- */

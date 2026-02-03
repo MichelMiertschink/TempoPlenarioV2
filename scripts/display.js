@@ -99,8 +99,8 @@ function updateDisplay() {
     // 4. Lógica de status no Header e cor do cronômetro
     if (timeLeft <= 0) {
         headerStatusEl.textContent = 'TEMPO ESGOTADO';
-        // countdownEl.style.color = '#e74c3c'; // Vermelho
-        countdownEl.style.color = '#fff'; // Branco
+        countdownEl.style.color = '#e74c3c'; // Vermelho
+        // countdownEl.style.color = '#fff'; // Branco
     } else if (!timerInterval) {
         headerStatusEl.textContent = expediente;
         headerStatusEl.style.color = '#f1c40f'; // Amarelo

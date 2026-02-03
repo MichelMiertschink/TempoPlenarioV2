@@ -97,7 +97,7 @@ function updateButtonText() {
         startStopBtn.textContent = 'Tempo Esgotado';
         startStopBtn.disabled = true;
     } else if (isRunning) {
-        startStopBtn.textContent = 'Pausar';
+        startStopBtn.textContent = 'Reiniciar (Barra de Espaço)';
         startStopBtn.disabled = false;
     } else {
         startStopBtn.textContent = 'Iniciar (Barra de Espaço)';
